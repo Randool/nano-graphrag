@@ -10,6 +10,7 @@ from functools import wraps
 from hashlib import md5
 from typing import Any, Union
 
+import json5
 import numpy as np
 import tiktoken
 
@@ -33,6 +34,13 @@ def convert_response_to_json(response: str) -> dict:
         data = json.loads(json_str)
         return data
     except json.JSONDecodeError as e:
+        # Backup plan to parse by JSON5
+        try:
+            data = json5.loads(json_str)
+            return data
+        except ValueError:
+            pass
+
         logger.error(f"Failed to parse JSON: {json_str}")
         raise e from None
 

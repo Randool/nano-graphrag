@@ -80,7 +80,11 @@ async def _handle_single_entity_extraction(
     record_attributes: list[str],
     chunk_key: str,
 ):
-    if record_attributes[0] != '"entity"' or len(record_attributes) < 4:
+    if (
+        not record_attributes
+        or record_attributes[0] != '"entity"'
+        or len(record_attributes) < 4
+    ):
         return None
     # add this record as a node in the G
     entity_name = clean_str(record_attributes[1].upper())
@@ -101,7 +105,11 @@ async def _handle_single_relationship_extraction(
     record_attributes: list[str],
     chunk_key: str,
 ):
-    if record_attributes[0] != '"relationship"' or len(record_attributes) < 5:
+    if (
+        not record_attributes
+        or record_attributes[0] != '"relationship"'
+        or len(record_attributes) < 5
+    ):
         return None
     # add this record as edge
     source = clean_str(record_attributes[1].upper())
